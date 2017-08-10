@@ -50,10 +50,10 @@
 	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
-	<!-- 开启组件扫描 -->
+	<!-- 开启组件注解扫描 -->
 	<context:component-scan base-package="cn.itcast.bos"/>
 	<!-- 开启Spring注解 -->
 	<context:annotation-config/>
 	<!-- 开启事务管理注解 -->
-	<tx:annotation-driven/>
+	<tx:annotation-driven transaction-manager="transactionManager"/>
 </beans>
