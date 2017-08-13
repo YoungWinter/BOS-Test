@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<hibernate-mapping>
-    <class name="cn.itcast.bos.domain.User" table="t_user">
-        <id name="id" type="java.lang.String">
-            <column name="id" length="32" />
-            <generator class="assigned" />
+<hibernate-mapping package="cn.itcast.bos.domain">
+    <class name="User" table="t_user">
+        <id name="id">
+            <generator class="native" />
         </id>
         <property name="username" type="java.lang.String">
             <column name="username" length="20" not-null="true" />
@@ -32,4 +31,7 @@
             <column name="remark" />
         </property>
     </class>
+    <query name="user.editPassword">
+    	update User set password=? where id=?
+    </query>
 </hibernate-mapping>

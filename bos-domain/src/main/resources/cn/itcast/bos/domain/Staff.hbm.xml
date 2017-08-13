@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="cn.itcast.bos.domain">
+    <class name="Staff" table="bc_staff">
+        <id name="id">
+            <generator class="native" />
+        </id>
+        <property name="name" ></property>
+        <property name="telephone" ></property>
+        <property name="haspda">
+        	<column name="haspda" default="0" ></column>
+        </property>
+        <property name="deltag" ></property>
+        <property name="station" ></property>
+        <property name="standard" ></property>
+        <set name="decidedzones" inverse="true">
+        	<key column="staff_id"></key>
+        	<one-to-many class="Decidedzone"/>
+        </set>
+    </class>
+    <query name="staff.deleteBatch">
+    	update Staff set deltag='1' where id=?
+    </query>
+</hibernate-mapping>

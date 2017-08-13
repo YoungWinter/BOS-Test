@@ -6,7 +6,7 @@ public class User implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String id;
+	private Integer id;
 	private String username;
 	private String password;
 	private Double salary;
@@ -16,11 +16,11 @@ public class User implements java.io.Serializable {
 	private String telephone;
 	private String remark;
 
-	public String getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

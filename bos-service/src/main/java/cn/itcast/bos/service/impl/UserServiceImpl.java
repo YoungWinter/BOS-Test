@@ -20,8 +20,16 @@ public class UserServiceImpl implements UserService {
 	public User login(User user) {
 		// 使用MD5加密密码
 		String password = MD5Utils.md5(user.getPassword());
-		return userDao.findUserByUsernameAndPassword(user.getUsername(),
-				password);
+		return userDao.findUserByUsernameAndPassword(user.getUsername(), password);
+	}
+
+	/**
+	 * 修改密码
+	 */
+	@Override
+	public void editPassword(Integer id, String password) {
+		password = MD5Utils.md5(password);
+		userDao.executeUpdate("user.editPassword", password, id);
 	}
 
 }

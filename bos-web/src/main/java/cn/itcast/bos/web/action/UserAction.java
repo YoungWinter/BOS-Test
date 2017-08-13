@@ -1,5 +1,7 @@
 package cn.itcast.bos.web.action;
 
+import java.io.IOException;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Controller;
 
 import cn.itcast.bos.domain.User;
 import cn.itcast.bos.service.UserService;
+import cn.itcast.bos.utils.BOSUtils;
 import cn.itcast.bos.web.action.base.BaseAction;
 
 @Controller
@@ -25,21 +28,35 @@ public class UserAction extends BaseAction<User> {
 		this.checkcode = checkcode;
 	}
 
+	// 修改密码
+	public String editPassword() throws IOException {
+		// 设置响应标志
+		String flag = "1";
+		// 获取当前登陆用户
+		User loginUser = BOSUtils.getLoginUser();
+		try {
+			userService.editPassword(loginUser.getId(), model.getPassword());
+		} catch (Exception e) {
+			flag = "0";
+			e.printStackTrace();
+		}
+		ServletActionContext.getResponse().setContentType("text/html;charset=UTF-8");
+		ServletActionContext.getResponse().getWriter().write(flag);
+		return NONE;
+	}
+
 	// 用户登录
 	public String login() {
 		String result = "";
 		// 1.从Session中获取验证码
-		String validatecode = (String) ServletActionContext.getRequest()
-				.getSession().getAttribute("key");
+		String validatecode = (String) ServletActionContext.getRequest().getSession().getAttribute("key");
 		// 2.校验验证码是否输入正确
-		if (StringUtils.isNotBlank(checkcode)
-				&& checkcode.equals(validatecode)) {
+		if (StringUtils.isNotBlank(checkcode) && checkcode.equals(validatecode)) {
 			// 校验用户是否存在
 			User user = userService.login(model);
 			if (user != null) {
 				// 登录成功,将user对象放入session，跳转到首页
-				ServletActionContext.getRequest().getSession()
-						.setAttribute("loginUser", user);
+				ServletActionContext.getRequest().getSession().setAttribute("loginUser", user);
 				result = HOME;
 			} else {
 				// 登录失败,设置提示信息,跳转到登录页面

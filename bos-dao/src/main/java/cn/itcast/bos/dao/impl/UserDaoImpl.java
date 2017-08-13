@@ -11,13 +11,12 @@ import cn.itcast.bos.domain.User;
 @Repository("userDao")
 public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public User findUserByUsernameAndPassword(String username,
-			String password) {
+	public User findUserByUsernameAndPassword(String username, String password) {
 		User user = null;
 		String hql = " from User u where u.username=? and u.password=? ";
-		List<User> userList = (List<User>) getHibernateTemplate().find(hql,
-				username, password);
+		List<User> userList = (List<User>) getHibernateTemplate().find(hql, username, password);
 		if (userList != null && userList.size() > 0) {
 			user = userList.get(0);
 		}
