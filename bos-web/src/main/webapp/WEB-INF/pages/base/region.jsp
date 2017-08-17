@@ -8,6 +8,9 @@
 <!-- 导入jquery核心类库 -->
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/jquery-1.8.3.js"></script>
+<!-- 导入ocupload.js库 -->
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/js/jquery.ocupload-1.1.2.js"></script>
 <!-- 导入easyui类库 -->
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath }/js/easyui/themes/default/easyui.css">
@@ -65,6 +68,11 @@
 		field : 'id',
 		checkbox : true,
 	},{
+		field : 'codeId',
+		title : '编码序号',
+		width : 120,
+		align : 'center'
+	},{
 		field : 'province',
 		title : '省',
 		width : 120,
@@ -97,6 +105,7 @@
 	} ] ];
 	
 	$(function(){
+		
 		// 先将body隐藏，再显示，不会出现页面刷新效果
 		$("body").css({visibility:"visible"});
 		
@@ -110,10 +119,16 @@
 			pageList: [30,50,100],
 			pagination : true,
 			toolbar : toolbar,
-			url : "json/region.json",
+			url : "regionAction_pageQuery.action",
 			idField : 'id',
 			columns : columns,
 			onDblClickRow : doDblClickRow
+		});
+		
+		//加载上传文件功能
+		$("#button-import").upload({
+			action:"regionAction_importXls.action",
+			name:"regionFile"
 		});
 		
 		// 添加、修改区域窗口

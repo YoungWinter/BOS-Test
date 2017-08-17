@@ -9,7 +9,7 @@
 	<package name="basicbos" namespace="/" extends="struts-default">
 		<!-- 配置拦截器 -->
 		<interceptors>
-			<interceptor name="BOSLoginInterceptor" class="cn.itcast.bos.web.interceptor.action.BOSLoginInterceptor">
+			<interceptor name="BOSLoginInterceptor" class="cn.itcast.bos.web.interceptor.BOSLoginInterceptor">
 				<!-- 指定哪些方法不需要拦截 -->
 				<param name="excludeMethods">login</param>
 			</interceptor>
@@ -36,6 +36,10 @@
 		<!-- 取派员管理 -->
 		<action name="staffAction_*" class="staffAction" method="{1}">
 			<result name="list">/WEB-INF/pages/base/staff.jsp</result>
+		</action>
+		<!-- 区域管理 -->
+		<action name="regionAction_*" class="regionAction" method="{1}">
+			<result name="list">/WEB-INF/pages/base/region.jsp</result>
 		</action>
 	</package>
 </struts>

@@ -8,6 +8,7 @@ public class Region implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
+	private String codeId;
 	private String province;
 	private String city;
 	private String district;
@@ -16,12 +17,40 @@ public class Region implements java.io.Serializable {
 	private String citycode;
 	private Set<Subarea> subareas = new HashSet<Subarea>();
 
+	public Region() {
+	}
+
+	public Region(String codeId, String province, String city, String district, String postcode, String shortcode,
+			String citycode, Set<Subarea> subareas) {
+		super();
+		this.codeId = codeId;
+		this.province = province;
+		this.city = city;
+		this.district = district;
+		this.postcode = postcode;
+		this.shortcode = shortcode;
+		this.citycode = citycode;
+		this.subareas = subareas;
+	}
+
+	public String getName() {
+		return province + "-" + city + "-" + district;
+	}
+
 	public Integer getId() {
 		return id;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getCodeId() {
+		return codeId;
+	}
+
+	public void setCodeId(String codeId) {
+		this.codeId = codeId;
 	}
 
 	public String getProvince() {
