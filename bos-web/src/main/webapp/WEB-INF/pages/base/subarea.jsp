@@ -44,7 +44,7 @@
 	}
 	
 	function doExport(){
-		alert("导出");
+		window.location.href = "${pageContext.request.contextPath }/subareaAction_exportXls.action";
 	}
 	
 	function doImport(){
@@ -83,6 +83,7 @@
 		iconCls : 'icon-undo',
 		handler : doExport
 	}];
+	
 	// 定义列
 	var columns = [ [ {
 		field : 'id',
@@ -146,6 +147,24 @@
 		align : 'center'
 	} ] ];
 	
+	//定义一个工具方法，用于将指定的form表单中所有的输入项转为json数据{key:value,key:value}
+	$.fn.serializeJson=function(){  
+        var serializeObj={};  
+        var array=this.serializeArray();
+        $(array).each(function(){  
+            if(serializeObj[this.name]){  
+                if($.isArray(serializeObj[this.name])){  
+                    serializeObj[this.name].push(this.value);  
+                }else{  
+                    serializeObj[this.name]=[serializeObj[this.name],this.value];  
+                }  
+            }else{  
+                serializeObj[this.name]=this.value;   
+            }  
+        });  
+        return serializeObj;  
+    }; 
+	
 	$(function(){
 		// 先将body隐藏，再显示，不会出现页面刷新效果
 		$("body").css({visibility:"visible"});
@@ -160,7 +179,7 @@
 			pageList: [30,50,100],
 			pagination : true,
 			toolbar : toolbar,
-			url : "json/subarea.json",
+			url : "${pageContext.request.contextPath }/subareaAction_pageQuery.action",
 			idField : 'id',
 			columns : columns,
 			onDblClickRow : doDblClickRow
@@ -187,8 +206,16 @@
 	        height: 400,
 	        resizable:false
 	    });
+		
+		//搜索
 		$("#btn").click(function(){
-			alert("执行查询...");
+			$("#grid").datagrid("load",$("#searchForm").serializeJson());
+			$("#searchWindow").window("close");
+		});
+		$("#save").click(function(){
+			if($("#addSubareaForm").form("validate")){
+				$("#addSubareaForm").submit();
+			}
 		});
 		
 	});
@@ -211,20 +238,20 @@
 		</div>
 		
 		<div style="overflow:auto;padding:5px;" border="false">
-			<form>
+			<form id="addSubareaForm" action="${pageContext.request.contextPath }/subareaAction_addSubarea.action" method="post">
 				<table class="table-edit" width="80%" align="center">
 					<tr class="title">
 						<td colspan="2">分区信息</td>
 					</tr>
-					<tr>
+					<!-- <tr>
 						<td>分拣编码</td>
 						<td><input type="text" name="id" class="easyui-validatebox" required="true"/></td>
-					</tr>
+					</tr> -->
 					<tr>
 						<td>选择区域</td>
 						<td>
 							<input class="easyui-combobox" name="region.id"  
-    							data-options="valueField:'id',textField:'name',url:'${pageContext.request.contextPath }/regionAction_listajax.action'" />  
+    							data-options="valueField:'id',textField:'name',mode:'remote',url:'${pageContext.request.contextPath }/regionAction_listajax.action'" />  
 						</td>
 					</tr>
 					<tr>
@@ -260,7 +287,7 @@
 	<!-- 查询分区 -->
 	<div class="easyui-window" title="查询分区窗口" id="searchWindow" collapsible="false" minimizable="false" maximizable="false" style="top:20px;left:200px">
 		<div style="overflow:auto;padding:5px;" border="false">
-			<form>
+			<form id="searchForm">
 				<table class="table-edit" width="80%" align="center">
 					<tr class="title">
 						<td colspan="2">查询条件</td>

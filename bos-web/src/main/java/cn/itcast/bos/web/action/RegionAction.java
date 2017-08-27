@@ -29,6 +29,7 @@ public class RegionAction extends BaseAction<Region> {
 
 	// 属性驱动(文件)
 	private File regionFile;
+	private String q;
 
 	// 文件上传
 	@SuppressWarnings("resource")
@@ -73,13 +74,21 @@ public class RegionAction extends BaseAction<Region> {
 	// 异步加载区域列表数据
 	public String listajax() {
 		List<Region> regionList = null;
-		regionList = regionService.findAll();
+		if (StringUtils.isNotBlank(q)) {
+			regionList = regionService.findListByQ(q);
+		} else {
+			regionList = regionService.findAll();
+		}
 		Java2Json(regionList, new String[] { "subareas" });
 		return NONE;
 	}
 
 	public void setRegionFile(File regionFile) {
 		this.regionFile = regionFile;
+	}
+
+	public void setQ(String q) {
+		this.q = q;
 	}
 
 }

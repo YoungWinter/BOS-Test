@@ -174,7 +174,7 @@
 	}
 	// 版权信息
 	function showAbout() {
-		$.messager.alert("宅急送 v1.0", "管理员邮箱: zqx@itcast.cn");
+		$.messager.alert("烽火驿站 v1.0", "管理员邮箱: zqx@itcast.cn");
 	}
 </script>
 </head>
@@ -236,7 +236,7 @@
 				<tr>
 					<td style="width: 300px;">
 						<div style="color: #999; font-size: 8pt;">
-							传智播客 | Powered by <a href="http://www.itcast.cn/">itcast.cn</a>
+							佳幂科技&#169; | Powered by Powered By 重庆佳幂科技有限公司
 						</div>
 					</td>
 					<td style="width: *;" class="co1"><span id="online"

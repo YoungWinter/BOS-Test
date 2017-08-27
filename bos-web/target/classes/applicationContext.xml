@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans 
-						http://www.springframework.org/schema/beans/spring-beans.xsd
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns="http://www.springframework.org/schema/beans"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xmlns:jaxws="http://cxf.apache.org/jaxws"
+		xmlns:soap="http://cxf.apache.org/bindings/soap"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
 						http://www.springframework.org/schema/context
-						http://www.springframework.org/schema/context/spring-context.xsd
+						http://www.springframework.org/schema/context/spring-context-4.2.xsd
 						http://www.springframework.org/schema/aop
-						http://www.springframework.org/schema/aop/spring-aop.xsd
+						http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
 						http://www.springframework.org/schema/tx 
-						http://www.springframework.org/schema/tx/spring-tx.xsd">
+						http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+						http://cxf.apache.org/bindings/soap 
+						http://cxf.apache.org/schemas/configuration/soap.xsd
+						http://cxf.apache.org/jaxws 
+						http://cxf.apache.org/schemas/jaxws.xsd">
 						
 	<!-- 加载连接数据库properties文件 -->
 	<context:property-placeholder location="classpath:db.properties"/>
@@ -56,4 +62,6 @@
 	<context:annotation-config/>
 	<!-- 开启事务管理注解 -->
 	<tx:annotation-driven transaction-manager="transactionManager"/>
+	<!-- 注册CRM客户端代理对象 -->
+	<jaxws:client id="crmService" serviceClass="cn.itcast.crm.service.CustomerService" address="http://localhost:8080/itcastcrm/service/customer"/>
 </beans>

@@ -70,6 +70,7 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T> {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void pageQuery(PageBean<T> pageBean) {
 		int currentPage = pageBean.getCurrentPage();
@@ -81,10 +82,18 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T> {
 		pageBean.setTotal(countList.get(0).intValue());
 		// 查询当前页面展示数据rows-->select * from bc_staff
 		criteria.setProjection(null);
+		// Hibernate封装对象的方式
+		criteria.setResultTransformer(DetachedCriteria.ROOT_ENTITY);
 		int firstResult = (currentPage - 1) * pageSize;
 		int maxResults = pageSize;
 		List<T> rows = (List<T>) getHibernateTemplate().findByCriteria(criteria, firstResult, maxResults);
 		pageBean.setRows(rows);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> findByCriteria(DetachedCriteria dc) {
+		return (List<T>) getHibernateTemplate().findByCriteria(dc);
 	}
 
 }

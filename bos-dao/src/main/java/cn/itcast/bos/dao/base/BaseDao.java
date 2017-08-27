@@ -3,6 +3,8 @@ package cn.itcast.bos.dao.base;
 import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.criterion.DetachedCriteria;
+
 import cn.itcast.bos.utils.PageBean;
 
 public interface BaseDao<T> {
@@ -21,4 +23,7 @@ public interface BaseDao<T> {
 
 	// 分页查询
 	public void pageQuery(PageBean<T> pageBean);
+
+	// 条件查询
+	public List<T> findByCriteria(DetachedCriteria dc);
 }

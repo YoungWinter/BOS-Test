@@ -1,5 +1,9 @@
 package cn.itcast.bos.service.impl;
 
+import java.util.List;
+
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,5 +47,13 @@ public class StaffServiceImpl implements StaffService {
 	@Override
 	public void update(Staff staff) {
 		staffDao.update(staff);
+	}
+
+	@Override
+	public List<Staff> findListNotDelete() {
+		DetachedCriteria dc = DetachedCriteria.forClass(Staff.class);
+		// 添加条件
+		dc.add(Restrictions.eq("deltag", "0"));
+		return staffDao.findByCriteria(dc);
 	}
 }

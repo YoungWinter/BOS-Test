@@ -40,8 +40,7 @@ public class PinYin4jUtils {
 	 *            多音字拼音之间的分隔符
 	 * @return
 	 */
-	public static String[] stringToPinyin(String src, boolean isPolyphone,
-			String separator) {
+	public static String[] stringToPinyin(String src, boolean isPolyphone, String separator) {
 		// 判断字符串是否为空
 		if ("".equals(src) || null == src) {
 			return null;
@@ -62,8 +61,7 @@ public class PinYin4jUtils {
 	 * @param src
 	 * @return
 	 */
-	public static String charToPinyin(char src, boolean isPolyphone,
-			String separator) {
+	public static String charToPinyin(char src, boolean isPolyphone, String separator) {
 		// 创建汉语拼音处理类
 		HanyuPinyinOutputFormat defaultFormat = new HanyuPinyinOutputFormat();
 		// 输出设置，大小写，音标方式
@@ -76,8 +74,7 @@ public class PinYin4jUtils {
 		if (src > 128) {
 			try {
 				// 转换得出结果
-				String[] strs = PinyinHelper.toHanyuPinyinStringArray(src,
-						defaultFormat);
+				String[] strs = PinyinHelper.toHanyuPinyinStringArray(src, defaultFormat);
 
 				// 是否查出多音字，默认是查出多音字的第一个字符
 				if (isPolyphone && null != separator) {
@@ -114,6 +111,7 @@ public class PinYin4jUtils {
 	 * @param separator
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	public static String hanziToPinyin(String hanzi, String separator) {
 
 		// 创建汉语拼音处理类
@@ -124,8 +122,7 @@ public class PinYin4jUtils {
 
 		String pinyingStr = "";
 		try {
-			pinyingStr = PinyinHelper.toHanyuPinyinString(hanzi, defaultFormat,
-					separator);
+			pinyingStr = PinyinHelper.toHanyuPinyinString(hanzi, defaultFormat, separator);
 		} catch (BadHanyuPinyinOutputFormatCombination e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -268,8 +265,7 @@ public class PinYin4jUtils {
 	 *            分隔符
 	 * @return
 	 */
-	public static String[] getHeadByString(String src, boolean isCapital,
-			String separator) {
+	public static String[] getHeadByString(String src, boolean isCapital, String separator) {
 		char[] chars = src.toCharArray();
 		String[] headString = new String[chars.length];
 		int i = 0;
@@ -295,17 +291,17 @@ public class PinYin4jUtils {
 		}
 		return headString;
 	}
-	
+
 	public static void main(String[] args) {
-		// pin4j 简码 和 城市编码 
-		String s1 = "中华人民共和国"; 
+		// pin4j 简码 和 城市编码
+		String s1 = "中华人民共和国";
 		String[] headArray = getHeadByString(s1); // 获得每个汉字拼音首字母
 		System.out.println(Arrays.toString(headArray));
-		
-		String s2 ="长城" ; 
-		System.out.println(Arrays.toString(stringToPinyin(s2,true,",")));
-		
-		String s3 ="长";
-		System.out.println(Arrays.toString(stringToPinyin(s3,true,",")));
+
+		String s2 = "长城";
+		System.out.println(Arrays.toString(stringToPinyin(s2, true, ",")));
+
+		String s3 = "长";
+		System.out.println(Arrays.toString(stringToPinyin(s3, true, ",")));
 	}
 }

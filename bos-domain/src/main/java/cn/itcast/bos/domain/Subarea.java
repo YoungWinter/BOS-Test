@@ -13,6 +13,11 @@ public class Subarea implements java.io.Serializable {
 	private Region region;
 	private Decidedzone decidedzone;
 
+	// 页面取值
+	public Integer getSubareaId() {
+		return id;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -75,6 +80,13 @@ public class Subarea implements java.io.Serializable {
 
 	public void setDecidedzone(Decidedzone decidedzone) {
 		this.decidedzone = decidedzone;
+	}
+
+	@Override
+	public String toString() {
+		return "Subarea [id=" + id + ", addresskey=" + addresskey + ", startnum=" + startnum + ", endnum=" + endnum
+				+ ", single=" + single + ", position=" + position + ", region=" + region + ", decidedzone="
+				+ decidedzone + "]";
 	}
 
 }

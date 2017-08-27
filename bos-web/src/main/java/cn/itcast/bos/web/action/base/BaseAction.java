@@ -57,7 +57,8 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
 	}
 
 	// Java集合对象转Json字符串
-	public void Java2Json(List<T> objs, String[] excludes) {
+	@SuppressWarnings("rawtypes")
+	public void Java2Json(List objs, String[] excludes) {
 		// 将pageBean封装为json对象
 		JsonConfig jsonConfig = new JsonConfig();
 		// 排除不需要的数据

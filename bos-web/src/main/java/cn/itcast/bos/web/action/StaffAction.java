@@ -1,7 +1,6 @@
 package cn.itcast.bos.web.action;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,18 +30,18 @@ public class StaffAction extends BaseAction<Staff> {
 		return LIST;
 	}
 
+	// 查询下拉列表(未删除)
+	public String listajax() {
+		List<Staff> staffList = staffService.findListNotDelete();
+		Java2Json(staffList, new String[] { "telephone", "haspda", "deltag", "station", "standard", "decidedzones" });
+		return NONE;
+	}
+
 	// 取派员分页查询
 	public String pageQuery() throws IOException {
 		// 查询数据
 		staffService.pageQuery(pageBean);
-		List<Staff> staffList = new ArrayList<Staff>();
-		for (Staff staff : pageBean.getRows()) {
-			if ("0".equals(staff.getDeltag())) {
-				staffList.add(staff);
-			}
-		}
-		pageBean.setRows(staffList);
-		Java2Json(pageBean, new String[] { "currentPage", "detachedCriteria", "pageSize" });
+		Java2Json(pageBean, new String[] { "currentPage", "detachedCriteria", "pageSize", "decidedzones" });
 		return NONE;
 	}
 
