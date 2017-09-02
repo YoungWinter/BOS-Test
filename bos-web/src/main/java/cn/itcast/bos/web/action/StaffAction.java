@@ -3,6 +3,7 @@ package cn.itcast.bos.web.action;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -24,9 +25,9 @@ public class StaffAction extends BaseAction<Staff> {
 	private StaffService staffService;
 
 	// 批量删除取派员
+	@RequiresPermissions("staff.delete") // 权限控制
 	public String deleteBatch() {
 		staffService.deleteBatch(ids);
-
 		return LIST;
 	}
 

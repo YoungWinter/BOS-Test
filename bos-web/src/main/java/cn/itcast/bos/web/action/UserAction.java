@@ -3,6 +3,11 @@ package cn.itcast.bos.web.action;
 import java.io.IOException;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -11,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import cn.itcast.bos.domain.User;
 import cn.itcast.bos.service.UserService;
 import cn.itcast.bos.utils.BOSUtils;
+import cn.itcast.bos.utils.MD5Utils;
 import cn.itcast.bos.web.action.base.BaseAction;
 
 @Controller
@@ -45,20 +51,26 @@ public class UserAction extends BaseAction<User> {
 		return NONE;
 	}
 
-	// 用户登录
+	// 用户登录(使用Shiro框架)
 	public String login() {
 		String result = "";
 		// 1.从Session中获取验证码
 		String validatecode = (String) ServletActionContext.getRequest().getSession().getAttribute("key");
 		// 2.校验验证码是否输入正确
 		if (StringUtils.isNotBlank(checkcode) && checkcode.equals(validatecode)) {
-			// 校验用户是否存在
-			User user = userService.login(model);
-			if (user != null) {
+			// 使用Shiro进行认证操作
+			Subject subject = SecurityUtils.getSubject();
+			// 创建用户名密码令牌
+			AuthenticationToken token = new UsernamePasswordToken(model.getUsername(),
+					MD5Utils.md5(model.getPassword()));
+			try {
+				subject.login(token);
 				// 登录成功,将user对象放入session，跳转到首页
+				User user = (User) subject.getPrincipal();
 				ServletActionContext.getRequest().getSession().setAttribute("loginUser", user);
 				result = HOME;
-			} else {
+			} catch (AuthenticationException e) {
+				e.printStackTrace();
 				// 登录失败,设置提示信息,跳转到登录页面
 				this.addActionError("用户名或者密码输入错误！");
 				result = LOGIN;
@@ -70,6 +82,21 @@ public class UserAction extends BaseAction<User> {
 		}
 		return result;
 	}
+
+	/*
+	 * // 用户登录 public String login() { String result = ""; // 1.从Session中获取验证码
+	 * String validatecode = (String)
+	 * ServletActionContext.getRequest().getSession().getAttribute("key"); //
+	 * 2.校验验证码是否输入正确 if (StringUtils.isNotBlank(checkcode) &&
+	 * checkcode.equals(validatecode)) { // 校验用户是否存在 User user =
+	 * userService.login(model); if (user != null) { //
+	 * 登录成功,将user对象放入session，跳转到首页
+	 * ServletActionContext.getRequest().getSession().setAttribute("loginUser",
+	 * user); result = HOME; } else { // 登录失败,设置提示信息,跳转到登录页面
+	 * this.addActionError("用户名或者密码输入错误！"); result = LOGIN; } } else { //
+	 * 输入的验证码错误,设置提示信息，跳转到登录页面 this.addActionError("输入的验证码错误！"); result = LOGIN;
+	 * } return result; }
+	 */
 
 	// 用户登出
 	public String logout() {

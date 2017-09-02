@@ -24,9 +24,19 @@
 		<!-- 全局结果集 -->
 		<global-results>
 			<result name="login">/login.jsp</result>
+			<result name="unauthorized">/unauthorized.jsp</result>
 		</global-results>
-		<!-- 访问权限控制 -->
+		<!-- 全局异常处理 -->
+		<global-exception-mappings>
+			<exception-mapping result="unauthorized" 
+				exception="org.apache.shiro.authz.UnauthorizedException"></exception-mapping>
+		</global-exception-mappings>
+		<!-- 访问权限控制 让Struts2默认的ActionSupport处理请求-->
+		<!-- <default-class-ref class="com.opensymphony.xwork2.ActionSupport" /> 
+			page_a_b.action->ActionSupport的execute方法,返回SUCCESS->跳转/WEB-INF/pages/a/b.jsp页面
+		-->
 		<action name="page_*_*">
+			<!-- 默认name为SUCCESS -->
 			<result type="dispatcher">/WEB-INF/pages/{1}/{2}.jsp</result>
 		</action>
 		<!-- 用户管理 -->
@@ -52,6 +62,10 @@
 		<!-- 工作通知单管理 -->
 		<action name="noticebillAction_*" class="noticebillAction" method="{1}">
 			<result name="noticebill_add">/WEB-INF/pages/qupai/noticebill_add.jsp</result>
+		</action>
+		<!-- 权限管理 -->
+		<action name="functionAction_*" class="functionAction" method="{1}">
+			<result name="list">/WEB-INF/pages/admin/function.jsp</result>
 		</action>
 	</package>
 </struts>

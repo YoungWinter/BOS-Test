@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib uri="http://shiro.apache.org/tags" prefix="shiro" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -67,12 +67,16 @@
 		text : '增加',
 		iconCls : 'icon-add',
 		handler : doAdd
-	}, {
-		id : 'button-delete',
-		text : '作废',
-		iconCls : 'icon-cancel',
-		handler : doDelete
-	},{
+	}, 
+	<shiro:hasPermission name="staff.delete">
+		{
+			id : 'button-delete',
+			text : '删除',
+			iconCls : 'icon-cancel',
+			handler : doDelete
+		},
+	</shiro:hasPermission>
+	{
 		id : 'button-save',
 		text : '还原',
 		iconCls : 'icon-save',
@@ -214,7 +218,8 @@
 				<a id="save" icon="icon-save" href="javascript:;" class="easyui-linkbutton" plain="true" >保存</a>
 			</div>
 		</div>
-		
+		<shiro:hasPermission name="staff.delete">
+		</shiro:hasPermission>
 		<div region="center" style="overflow:auto;padding:5px;" border="false">
 			<form id="staffAddForm" action="${pageContext.request.contextPath }/staffAction_add.action" method="post">
 				<table class="table-edit" width="80%" align="center">
