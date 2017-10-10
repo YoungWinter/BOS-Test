@@ -29,8 +29,16 @@
 <script type="text/javascript">
 	$(function(){
 		$("body").css({visibility:"visible"});
+		//获取所用角色
+		$.post('${pageContext.request.contextPath }/roleAction_listajax.action',function(data){
+			for(var i = 0; i < data.length; i++){
+				$("#roleTD").append('<input id="sss'+i+'" type="checkbox" name="roleIds" value="'+data[i].id+'"><label for="sss'+i+'">'+data[i].name+'<label>&nbsp&nbsp');
+			}
+		});
 		$('#save').click(function(){
-			$('#form').submit();
+			if($('#userForm').form("validate")){
+				$('#userForm').submit();
+			}
 		});
 	});
 </script>	
@@ -42,7 +50,7 @@
 		</div>
 	</div>
     <div region="center" style="overflow:auto;padding:5px;" border="false">
-       <form id="form" method="post" >
+       <form id="userForm" method="post" action="${pageContext.request.contextPath }/userAction_add.action">
            <table class="table-edit"  width="95%" align="center">
            		<tr class="title"><td colspan="4">基本信息</td></tr>
 	           	<tr><td>用户名:</td><td><input type="text" name="username" id="username" class="easyui-validatebox" required="true" /></td>
@@ -74,6 +82,12 @@
 					</td>
 				</tr>
 	           	<tr><td>备注:</td><td colspan="3"><textarea style="width:80%"></textarea></td></tr>
+	           	<tr>
+	           		<td>选择角色:</td>
+	           		<td id="roleTD" colspan="3">
+	           			
+	           		</td>
+	           	</tr>
            </table>
        </form>
 	</div>

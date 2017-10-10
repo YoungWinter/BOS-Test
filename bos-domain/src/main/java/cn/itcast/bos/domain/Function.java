@@ -21,7 +21,28 @@ public class Function implements java.io.Serializable {
 	private String generatemenu;// 是否生成菜单，1：是 0：否
 	private Integer zindex;
 	private Set<Role> roles = new HashSet<Role>();// 当前权限对应的多个角色
-	private Set<Role> children = new HashSet<Role>();// 当前权限的下级权限
+	private Set<Function> children = new HashSet<Function>();// 当前权限的下级权限
+
+	public Function() {
+	}
+
+	public String getpId() {
+		String pid = null;
+		if (parentFunction == null) {
+			pid = "0";
+		} else {
+			pid = parentFunction.getId();
+		}
+		return pid;
+	}
+
+	public String getText() {
+		return name;
+	}
+
+	public Function(String functionId) {
+		this.id = functionId;
+	}
 
 	public String getId() {
 		return id;
@@ -95,11 +116,11 @@ public class Function implements java.io.Serializable {
 		this.roles = roles;
 	}
 
-	public Set<Role> getChildren() {
+	public Set<Function> getChildren() {
 		return children;
 	}
 
-	public void setChildren(Set<Role> children) {
+	public void setChildren(Set<Function> children) {
 		this.children = children;
 	}
 }

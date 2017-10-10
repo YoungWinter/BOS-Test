@@ -1,0 +1,6 @@
+[
+		{ "id":"11", "children":[
+			{ "id":"11", "children":[], "text":"高级数据"}
+		], "text":"基础数据"},
+		{ "id":"12", "children":[], "text":"取派员设置",  "page":"page_base_staff.action"}
+]

@@ -1,5 +1,8 @@
 package cn.itcast.bos.service.realm;
 
+import java.util.List;
+
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -9,15 +12,20 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import cn.itcast.bos.dao.FunctionDao;
 import cn.itcast.bos.dao.UserDao;
+import cn.itcast.bos.domain.Function;
 import cn.itcast.bos.domain.User;
 
 public class BOSRealm extends AuthorizingRealm {
 
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	private FunctionDao functionDao;
 
 	// 认证方法
 	@Override
@@ -36,12 +44,21 @@ public class BOSRealm extends AuthorizingRealm {
 	}
 
 	// 授权方法
-	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+		// 获取当前登陆用户
+		User user = (User) SecurityUtils.getSubject().getPrincipal();
 		// 为用户授权
-		info.addStringPermission("staff.list");
-		// TODO 根据实际情况获得对应的权限
+		List<Function> list = null;
+		if (user.getUsername().equals("admin")) {
+			DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Function.class);
+			list = functionDao.findByCriteria(detachedCriteria);
+		} else {
+			list = functionDao.findFunctionListByUserId(user.getId());
+		}
+		for (Function function : list) {
+			info.addStringPermission(function.getCode());
+		}
 		return info;
 	}
 

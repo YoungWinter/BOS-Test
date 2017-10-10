@@ -27,8 +27,31 @@ public class UserAction extends BaseAction<User> {
 	// 属性驱动，接收页面输入的验证码
 	private String checkcode;
 
+	private String[] roleIds;
+
+	public void setRoleIds(String[] roleIds) {
+		this.roleIds = roleIds;
+	}
+
 	@Autowired
 	private UserService userService;
+
+	/**
+	 * 保存用户
+	 */
+	public String add() {
+		userService.save(model, roleIds);
+		return LIST;
+	}
+
+	/**
+	 * 分页查询
+	 */
+	public String pageQuery() {
+		userService.pageQuery(pageBean);
+		this.Java2Json(pageBean, new String[] { "noticebills", "roles" });
+		return NONE;
+	}
 
 	public void setCheckcode(String checkcode) {
 		this.checkcode = checkcode;

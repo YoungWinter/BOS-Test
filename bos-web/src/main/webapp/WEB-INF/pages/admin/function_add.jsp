@@ -31,6 +31,7 @@
 		// 点击保存
 		$('#save').click(function(){
 			if($("#functionForm").form("validate")){
+				$("#nametext").val($('#namess').attr('value'));
 				$("#functionForm").submit();
 			}
 		});
@@ -46,6 +47,7 @@
 <div data-options="region:'center'">
 	<form id="functionForm" method="post" action="${pageContext.request.contextPath }/functionAction_add.action">
 				<table class="table-edit" width="80%" align="center">
+					<input id="nametext" type="hidden" name="text" />
 					<tr class="title">
 						<td colspan="2">功能权限信息</td>
 					</tr>
@@ -57,7 +59,7 @@
 					</tr>
 					<tr>
 						<td>名称</td>
-						<td><input type="text" name="name" class="easyui-validatebox" data-options="required:true" /></td>
+						<td><input id="namess" type="text" name="name" class="easyui-validatebox" data-options="required:true" /></td>
 					</tr>
 					<tr>
 						<td>访问路径</td>
@@ -81,8 +83,8 @@
 					<tr>
 						<td>父功能点</td>
 						<td>
-							<input name="parentFunction.id" class="easyui-combobox" 
-							data-options="valueField:'id',textField:'name',url:'functionAction_listajax.action'"/>
+							<input class="easyui-combotree" name="parentFunction.id"
+							data-options="url:'${pageContext.request.contextPath }/functionAction_listajax.action'" style="width:170px" />
 						</td>
 					</tr>
 					<tr>
